@@ -23,7 +23,7 @@ module.exports = (router) => {
 
         const user = new User({
             email: req.body.email.toLowerCase(),
-            username: req.body.username,
+            username: req.body.username.toLowerCase(),
             password: req.body.password
         })
         user.save((err) => {
@@ -57,7 +57,7 @@ module.exports = (router) => {
 
         try {
             const user = await User.findOne({
-                username: req.params.username
+                username: req.params.username.toLowerCase()
             });
 
             if (!!user) {
@@ -77,6 +77,46 @@ module.exports = (router) => {
                 message: err
             });
         }
+    });
+
+    router.post('/login', async(req, res) => {
+        if (!req.body.username || !req.body.password) {
+            return res.json({
+                success: false,
+                message: 'A username and password are required'
+            });
+        }
+        try {
+            const user = await User.findOne({
+                username: req.body.username.toLowerCase()
+            });
+            if (!user) {
+                return res.json({
+                    success: false,
+                    message: 'Username not found'
+                });
+
+            }
+            const isValidPassword = user.comparePassword(req.body.password);
+            if (!isValidPassword) {
+                return res.json({
+                    success: false,
+                    message: 'Invalid username or password'
+                });
+            }
+
+            return res.json({
+                success: true,
+                message: `welcome ${user.username}!`
+            });
+
+        } catch (err) {
+            return res.json({
+                success: false,
+                message: err
+            });
+        }
+
     });
 
     return router;

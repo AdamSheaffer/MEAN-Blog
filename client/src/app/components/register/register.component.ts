@@ -47,11 +47,11 @@ export class RegisterComponent implements OnInit {
   }
 
   disableForm() {
-    ['username', 'email', 'password', 'confirm'].forEach(f => this.form.controls[f].disable());
+    Object.keys(this.form.controls).forEach(f => this.form.controls[f].disable());
   }
 
   enableForm() {
-    ['username', 'email', 'password', 'confirm'].forEach(f => this.form.controls[f].enable());
+    Object.keys(this.form.controls).forEach(f => this.form.controls[f].enable());
   }
 
   checkUsername() {
