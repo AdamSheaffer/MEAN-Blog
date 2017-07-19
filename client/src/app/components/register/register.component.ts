@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: 'app-register',
@@ -9,6 +10,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class RegisterComponent implements OnInit {
 
   form: FormGroup;
+  message: String;
+  messageClass: String;
+  isProcessing = false;
 
   createForm() {
     this.form = this.formBuilder.group({
@@ -32,15 +36,40 @@ export class RegisterComponent implements OnInit {
     }, { validator: this.matchingPasswords('password', 'confirm') });
   }
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
     this.createForm();
   }
 
   ngOnInit() {
   }
 
+  private disableForm() {
+    ['username', 'email', 'password', 'confirm'].forEach(f => this.form.controls[f].disable());
+  }
+
+  private enableForm() {
+    ['username', 'email', 'password', 'confirm'].forEach(f => this.form.controls[f].enable());
+  }
+
   onRegisterSubmit() {
-    console.log(this.form);
+    this.isProcessing = true;
+    const user = ['username', 'email', 'password'].reduce((user, field) => {
+      user[field] = this.form.get(field).value;
+      return user;
+    }, {});
+
+    this.authService.registerUser(user).subscribe(res => {
+      if (res.success) {
+        this.messageClass = 'alert alert-success';
+        this.disableForm();
+      } else {
+        this.messageClass = 'alert alert-danger';
+        this.enableForm();
+        this.isProcessing = false;
+      }
+      this.message = res.message;
+    });
+
   }
 
   // Validation

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const env = require('dotenv');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const authentication = require('./routes/authentication')(router);
 
 env.config({
@@ -21,6 +22,9 @@ mongoose.connect(process.env.DATABASE, (err) => {
     }
 });
 
+app.use(cors({
+    origin: 'http://localhost:4200'
+}));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
