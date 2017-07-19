@@ -13,4 +13,8 @@ export class AuthService {
   registerUser(user): Observable<any> {
     return this.http.post(`${this.domain}/authentication/register`, user).map(res => res.json());
   }
+
+  checkUsername(username: String): Observable<any> {
+    return this.http.get(`${this.domain}/authentication/checkUsername/${username}`).map(res => res.json());
+  }
 }

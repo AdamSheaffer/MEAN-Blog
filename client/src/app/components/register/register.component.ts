@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from "../../services/auth.service";
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +14,8 @@ export class RegisterComponent implements OnInit {
   message: String;
   messageClass: String;
   isProcessing = false;
+  isUniqUsername = true;
+  usernameUniqMessage: String;
 
   createForm() {
     this.form = this.formBuilder.group({
@@ -36,19 +39,28 @@ export class RegisterComponent implements OnInit {
     }, { validator: this.matchingPasswords('password', 'confirm') });
   }
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
     this.createForm();
   }
 
   ngOnInit() {
   }
 
-  private disableForm() {
+  disableForm() {
     ['username', 'email', 'password', 'confirm'].forEach(f => this.form.controls[f].disable());
   }
 
-  private enableForm() {
+  enableForm() {
     ['username', 'email', 'password', 'confirm'].forEach(f => this.form.controls[f].enable());
+  }
+
+  checkUsername() {
+    const username = this.form.get('username').value;
+    if (!username || !username.trim().length) return;
+    this.authService.checkUsername(username).subscribe(data => {
+      this.isUniqUsername = data.success;
+      this.usernameUniqMessage = data.success ? '' : data.message;
+    });
   }
 
   onRegisterSubmit() {
@@ -58,16 +70,17 @@ export class RegisterComponent implements OnInit {
       return user;
     }, {});
 
-    this.authService.registerUser(user).subscribe(res => {
-      if (res.success) {
+    this.authService.registerUser(user).subscribe(data => {
+      if (data.success) {
         this.messageClass = 'alert alert-success';
         this.disableForm();
+        setTimeout(() => this.router.navigate(['/login']), 1500);
       } else {
         this.messageClass = 'alert alert-danger';
         this.enableForm();
         this.isProcessing = false;
       }
-      this.message = res.message;
+      this.message = data.message;
     });
 
   }

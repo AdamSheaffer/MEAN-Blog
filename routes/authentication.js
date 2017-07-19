@@ -47,5 +47,37 @@ module.exports = (router) => {
         })
     });
 
+    router.get('/checkUsername/:username', async(req, res) => {
+        if (!req.params.username) {
+            return res.json({
+                success: false,
+                message: 'No username provided'
+            });
+        }
+
+        try {
+            const user = await User.findOne({
+                username: req.params.username
+            });
+
+            if (!!user) {
+                return res.json({
+                    success: false,
+                    message: 'That username is already taken'
+                });
+            }
+
+            return res.json({
+                success: true
+            });
+
+        } catch (err) {
+            return res.json({
+                success: false,
+                message: err
+            });
+        }
+    });
+
     return router;
 }

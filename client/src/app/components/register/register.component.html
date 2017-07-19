@@ -11,14 +11,15 @@
   <!-- Username Input -->
   <div class="form-group">
     <label for="username">Username</label>
-    <div [ngClass]="{'has-error': (form.controls.username.errors && form.controls.username.dirty), 'has-success': !form.controls.username.errors}">
-      <input type="text" name="username" class="form-control" autocomplete="off" placeholder="*Username" formControlName="username"
-      />
+    <div [ngClass]="{'has-error': (form.controls.username.errors && form.controls.username.dirty) || (!isUniqUsername && form.controls.username.dirty), 'has-success': !form.controls.username.errors && isUniqUsername}">
+      <input (blur)="checkUsername()" type="text" name="username" class="form-control" autocomplete="off" placeholder="*Username"
+        formControlName="username" />
       <!-- Validation -->
       <ul class="help-block">
         <li *ngIf="form.controls.username.errors?.required && form.controls.username.dirty">This field is required</li>
         <li *ngIf="form.controls.username.errors?.minlength && form.controls.username.dirty || form.controls.username.errors?.maxlength && form.controls.username.dirty ">Username must be at least 3 characters but no more than 30</li>
         <li *ngIf="form.controls.username.errors?.validateUsername && form.controls.username.dirty">Username must not have any special characters</li>
+        <li :*ngIf="!isUniqUsername">{{usernameUniqMessage}}</li>
       </ul>
     </div>
   </div>
@@ -66,7 +67,7 @@
   </div>
 
   <!-- Submit Input -->
-  <input [disabled]="!form.valid || isProcessing" type="submit" class="btn btn-primary" value="Submit" />
+  <input [disabled]="!form.valid || isProcessing || !isUniqUsername" type="submit" class="btn btn-primary" value="Submit" />
 
 </form>
 <!-- Registration Form /-->
