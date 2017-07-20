@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 @Component({
   selector: 'app-register',
@@ -11,8 +12,6 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   form: FormGroup;
-  message: String;
-  messageClass: String;
   isProcessing = false;
   isUniqUsername = true;
   usernameUniqMessage: String;
@@ -39,7 +38,11 @@ export class RegisterComponent implements OnInit {
     }, { validator: this.matchingPasswords('password', 'confirm') });
   }
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private msgService: FlashMessagesService) {
     this.createForm();
   }
 
@@ -72,15 +75,14 @@ export class RegisterComponent implements OnInit {
 
     this.authService.registerUser(user).subscribe(data => {
       if (data.success) {
-        this.messageClass = 'alert alert-success';
+        this.msgService.show(data.message, { cssClass: 'alert alert-success' });
         this.disableForm();
-        setTimeout(() => this.router.navigate(['/login']), 1500);
+        this.router.navigate(['/login']);
       } else {
-        this.messageClass = 'alert alert-danger';
+        this.msgService.show(data.message, { cssClass: 'alert alert-danger' });
         this.enableForm();
         this.isProcessing = false;
       }
-      this.message = data.message;
     });
 
   }

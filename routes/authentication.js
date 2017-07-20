@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 module.exports = (router) => {
     router.post('/register', (req, res) => {
@@ -105,9 +106,21 @@ module.exports = (router) => {
                 });
             }
 
+            // Valid Login
+            const token = jwt.sign({
+                userId: user._id
+            }, process.env.SECRET, {
+                expiresIn: '24h'
+            });
+
             return res.json({
                 success: true,
-                message: `welcome ${user.username}!`
+                message: `welcome ${user.username}!`,
+                token,
+                user: {
+                    username: user.username,
+                    email: user.email
+                }
             });
 
         } catch (err) {
@@ -117,6 +130,54 @@ module.exports = (router) => {
             });
         }
 
+    });
+
+    router.use((req, res, next) => {
+        const token = req.headers.authorization
+        if (!token) {
+            res.json({
+                success: false,
+                message: 'No token provided'
+            });
+        } else {
+            jwt.verify(token, process.env.SECRET, (err, decoded) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: 'Token invalid' + err
+                    })
+                } else {
+                    req.decoded = decoded;
+                    next();
+                }
+            });
+        }
+    })
+
+    router.get('/profile', async(req, res) => {
+        try {
+            const user = await User
+                .findOne({
+                    _id: req.decoded.userId
+                })
+                .select('username email')
+                .exec();
+            if (!user) {
+                return res.json({
+                    success: false,
+                    message: 'No user was found'
+                });
+            }
+            return res.json({
+                success: true,
+                user
+            });
+        } catch (err) {
+            return res.json({
+                success: false,
+                message: err
+            });
+        }
     });
 
     return router;

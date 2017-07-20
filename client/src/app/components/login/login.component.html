@@ -1,10 +1,5 @@
 <h1 class="page-header">Login</h1>
 
-<!-- Success/Error messages -->
-<div class="row show-hide-message">
-  <div :[class]="messageClass">{{message}}</div>
-</div>
-
 <!-- Login Form -->
 <form [formGroup]="form" (submit)="onLoginSubmit()">
 
@@ -23,7 +18,7 @@
   <div class="form-group">
     <label for="password">Password</label>
     <div [ngClass]="{'has-error': form.controls.password.errors && form.controls.password.dirty, 'has-success': !form.controls.password.errors}">
-      <input type="password" name="password" formControlName="password" />
+      <input type="password" class="form-control" name="password" formControlName="password" />
       <ul class="help-block">
         <li *ngIf="form.controls.password.errors?.required && form.controls.password.dirty">This field is required</li>
       </ul>
