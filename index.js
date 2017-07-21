@@ -5,6 +5,7 @@ const env = require('dotenv');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const errorHandlers = require('./handlers/errorHandlers');
 const authentication = require('./routes/authentication')(router);
 
 env.config({
@@ -35,6 +36,12 @@ app.use('/authentication', authentication);
 app.get('*', (req, res) => {
     res.sendFile(path.join(`${__dirname}/client/dist/index.html`));
 });
+
+if (app.get('env') === 'development') {
+    app.use(errorHandlers.developmentErrors);
+} else {
+    app.use(errorHandlers.productionErrors);
+}
 
 app.listen(8080, () => {
     console.log('👌 👌 👌 listening on port 8080');
