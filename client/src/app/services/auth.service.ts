@@ -8,8 +8,9 @@ import 'rxjs/add/operator/map';
 export class AuthService {
 
   domain = "http://localhost:8080";
-  authToken;
-  user;
+  redirectUrl: String;
+  authToken: String;
+  user: any;
 
   constructor(private http: Http) { }
 

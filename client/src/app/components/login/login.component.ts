@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
         this.msgService.show(data.message, { cssClass: 'alert alert-success' });
         this.authService.storeUserData(data.token, data.user);
         this.disableForm();
-        this.router.navigate(['/profile']);
+        this.router.navigate([`${this.authService.redirectUrl || '/profile'}`]);
       }
     });
   }
