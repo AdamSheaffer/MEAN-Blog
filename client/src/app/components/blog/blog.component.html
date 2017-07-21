@@ -1,0 +1,86 @@
+<h1 class="page-header">Blog Feed</h1>
+
+<button *ngIf="!isNewPost" (click)="newBlogForm()" type="button" class="btn btn-primary">New Post</button>
+<button [disabled]="isLoadingBlogs" *ngIf="!isNewPost" (click)="reloadBlogs()" type="button" class="btn btn-warning">
+  <span class="glyphicon glyphicon-repeat"></span>
+  <span>&nbsp;</span>
+  Reload
+</button>
+
+<br>
+<br>
+
+<div *ngIf="!isNewPost">
+  <div class="panel panel-primary">
+
+    <!-- Blog Heading -->
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        Blog Title
+      </h3>
+    </div>
+
+    <!-- Blog Content -->
+    <div class="panel-body">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum, doloribus. Quibusdam vel animi blanditiis excepturi et dolores,
+      provident adipisci! Earum consequuntur temporibus asperiores quisquam odit vero necessitatibus, harum, in ducimus?
+    </div>
+
+    <!-- Blog Footer -->
+    <div class="panel-footer">
+      <strong>Posted by</strong> FILL ME IN
+      <br />
+      <strong>Posted:</strong> FILL ME IN
+      <div>
+        <p>
+          <strong>Likes</strong> 35
+          <br>
+          <strong>Dislikes</strong> 5
+        </p>
+      </div>
+      <a href="#">
+        <button type="button" class="btn btn-sm btn-info">Edit</button>
+        <button type="button" class="btn btn-sm btn-danger">Delete</button>
+      </a>
+
+      <!-- Likes -->
+      <div class="dropdown">
+        <button type="button" class="btn btn-sm btn-success">
+          <span class="glyphicon glyphicon-thumbs-up">&nbsp;</span> 21
+        </button>
+        <div class="dropdown-content">
+          <a>Adam2</a>
+          <a>Bob836</a>
+          <a>SpUdZMcNaste</a>
+        </div>
+      </div>
+
+      <!-- Dislikes -->
+      <div class="dropdown">
+        <button type="button" class="btn btn-sm btn-danger">
+          <span class="glyphicon glyphicon-thumbs-down">&nbsp;</span> 2
+        </button>
+        <div class="dropdown-content">
+          <a>RichardJdh4H</a>
+          <a>CR4ZMcNaste</a>
+        </div>
+      </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Comments -->
+    <ul class="list-group">
+      <li class="list-group-item">
+        <button (click)="createComment()" class="btn btn-sm btn-danger">Post Comment</button>
+        <br>
+        <!-- <form>
+          <textarea class="form-control" name="comments" rows="8" cols="30"></textarea>
+          <button class="btn btn-sm btn-info">Submit</button>
+          <button class="btn btn-sm btn-danger">Cancel</button>
+        </form> -->
+      </li>
+      <li class="list-group-item"></li>
+      <li class="list-group-item"></li>
+    </ul>
+  </div>
+</div>
