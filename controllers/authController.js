@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
-exports.register = (req, res) => {
+exports.register = async (req, res) => {
     if (!req.body.email) {
         return res.json({
             success: false,
@@ -47,7 +47,7 @@ exports.register = (req, res) => {
     })
 };
 
-exports.checkUsername = async(req, res) => {
+exports.checkUsername = async (req, res) => {
     if (!req.params.username) {
         return res.json({
             success: false,
@@ -55,80 +55,64 @@ exports.checkUsername = async(req, res) => {
         });
     }
 
-    try {
-        const user = await User.findOne({
-            username: req.params.username.toLowerCase()
-        });
+    const user = await User.findOne({
+        username: req.params.username.toLowerCase()
+    });
 
-        if (!!user) {
-            return res.json({
-                success: false,
-                message: 'That username is already taken'
-            });
-        }
-
-        return res.json({
-            success: true
-        });
-
-    } catch (err) {
+    if (!!user) {
         return res.json({
             success: false,
-            message: err
+            message: 'That username is already taken'
         });
     }
+
+    return res.json({
+        success: true
+    });
 };
 
-exports.login = async(req, res) => {
+exports.login = async (req, res) => {
     if (!req.body.username || !req.body.password) {
         return res.json({
             success: false,
             message: 'A username and password are required'
         });
     }
-    try {
-        const user = await User.findOne({
-            username: req.body.username.toLowerCase()
-        });
-        if (!user) {
-            return res.json({
-                success: false,
-                message: 'Username not found'
-            });
 
-        }
-        const isValidPassword = user.comparePassword(req.body.password);
-        if (!isValidPassword) {
-            return res.json({
-                success: false,
-                message: 'Invalid username or password'
-            });
-        }
-
-        // Valid Login
-        const token = jwt.sign({
-            userId: user._id
-        }, process.env.SECRET, {
-            expiresIn: '24h'
-        });
-
-        return res.json({
-            success: true,
-            message: `welcome ${user.username}!`,
-            token,
-            user: {
-                username: user.username,
-                email: user.email
-            }
-        });
-
-    } catch (err) {
+    const user = await User.findOne({
+        username: req.body.username.toLowerCase()
+    });
+    if (!user) {
         return res.json({
             success: false,
-            message: err
+            message: 'Username not found'
+        });
+
+    }
+    const isValidPassword = user.comparePassword(req.body.password);
+    if (!isValidPassword) {
+        return res.json({
+            success: false,
+            message: 'Invalid username or password'
         });
     }
 
+    // Valid Login
+    const token = jwt.sign({
+        userId: user._id
+    }, process.env.SECRET, {
+            expiresIn: '24h'
+        });
+
+    return res.json({
+        success: true,
+        message: `welcome ${user.username}!`,
+        token,
+        user: {
+            username: user.username,
+            email: user.email
+        }
+    });
 };
 
 exports.verifyToken = (req, res, next) => {
@@ -153,28 +137,21 @@ exports.verifyToken = (req, res, next) => {
     }
 };
 
-exports.profile = async(req, res) => {
-    try {
-        const user = await User
-            .findOne({
-                _id: req.decoded.userId
-            })
-            .select('username email')
-            .exec();
-        if (!user) {
-            return res.json({
-                success: false,
-                message: 'No user was found'
-            });
-        }
-        return res.json({
-            success: true,
-            user
-        });
-    } catch (err) {
+exports.profile = async (req, res) => {
+    const user = await User
+        .findOne({
+            _id: req.decoded.userId
+        })
+        .select('username email')
+        .exec();
+    if (!user) {
         return res.json({
             success: false,
-            message: err
+            message: 'No user was found'
         });
     }
+    return res.json({
+        success: true,
+        user
+    });
 };
