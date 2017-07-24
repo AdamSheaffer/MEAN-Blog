@@ -12,7 +12,7 @@ exports.developmentErrors = (err, req, res, next) => {
     };
     res.status(err.status || 500);
     return res.json({
-        success: "false in dev",
+        success: false,
         errorDetails
     });
 };
@@ -20,7 +20,7 @@ exports.developmentErrors = (err, req, res, next) => {
 exports.productionErrors = (err, req, res, next) => {
     res.status(err.status || 500);
     return res.json({
-        success: "false is prod",
+        success: false,
         message: err.message,
         error: {}
     });
