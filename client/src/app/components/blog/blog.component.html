@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <button [disabled]="isProcessing" (click)="cancelBlogPost()" class="btn btn-sm btn-danger">Cancel</button>
+  <button [disabled]="isProcessing" (click)="cancelBlogPost()" type="button" class="btn btn-sm btn-danger">Cancel</button>
   <button [disabled]="isProcessing || !form.valid" type="submit" class="btn btn-sm btn-success">Post</button>
 </form>
 
