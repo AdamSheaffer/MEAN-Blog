@@ -17,5 +17,9 @@ module.exports = (router) => {
         catchErrors(blogController.newBlog)
     );
 
+    router.get('/blogs',
+        authController.verifyToken,
+        catchErrors(blogController.getBlogs));
+
     return router;
 }

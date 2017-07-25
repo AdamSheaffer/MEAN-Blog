@@ -18,5 +18,12 @@ exports.newBlog = async (req, res) => {
         message: 'Blog posted',
         blog
     });
+};
 
+exports.getBlogs = async (req, res) => {
+    const blogs = await Blog.find({}).sort({ 'createdAt': -1 })
+    return res.json({
+        success: true,
+        blogs
+    });
 };

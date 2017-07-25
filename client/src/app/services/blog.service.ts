@@ -11,4 +11,9 @@ export class BlogService {
     const headers = this.authService.createAuthenticationHeaders();
     return this.http.post(`${this.authService.domain}/authentication/newBlog`, blog, headers).map(data => data.json());
   }
+
+  getBlogs() {
+    const headers = this.authService.createAuthenticationHeaders();
+    return this.http.get(`${this.authService.domain}/authentication/blogs`, headers).map(data => data.json());
+  }
 }

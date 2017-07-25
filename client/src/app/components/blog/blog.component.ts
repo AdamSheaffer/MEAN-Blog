@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { AuthService } from '../../services/auth.service';
 import { BlogService } from '../../services/blog.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { IBlog } from '../../shared/blog.model';
 
 @Component({
   selector: 'app-blog',
@@ -16,6 +17,7 @@ export class BlogComponent implements OnInit {
   isLoadingBlogs = true;
   username: String;
   form: FormGroup;
+  blogs: IBlog[] = [];
 
   createForm() {
     this.form = this.formBuilder.group({
@@ -41,6 +43,7 @@ export class BlogComponent implements OnInit {
   ngOnInit() {
     this.authService.getProfile().subscribe(p => {
       this.username = p.user.username;
+      this.reloadBlogs();
     });
   }
 
@@ -55,6 +58,7 @@ export class BlogComponent implements OnInit {
       if (!data.success) {
         this.msgService.show(data.message, { cssClass: 'alert alert-danger' });
       } else {
+        this.reloadBlogs();
         this.msgService.show(data.message, { cssClass: 'alert alert-success' });
         this.form.reset();
         this.isNewPost = false;
@@ -67,7 +71,14 @@ export class BlogComponent implements OnInit {
   }
 
   reloadBlogs() {
-
+    this.blogService.getBlogs().subscribe(res => {
+      if (!res.success) {
+        this.msgService.show(res.message, { cssClass: 'alert alert-danger' });
+      } else {
+        this.blogs = res.blogs;
+        console.log(this.blogs);
+      }
+    });
   }
 
   createComment() {
