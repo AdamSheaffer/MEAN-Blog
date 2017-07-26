@@ -4,7 +4,9 @@ const blogController = require('../controllers/blogController');
 
 module.exports = (router) => {
     // Auth
-    router.post('/register', catchErrors(authController.register));
+    router.post('/register',
+        catchErrors(authController.register),
+        catchErrors(authController.login));
     router.get('/checkUsername/:username', catchErrors(authController.checkUsername));
     router.post('/login', catchErrors(authController.login));
     router.get('/profile',
@@ -20,6 +22,14 @@ module.exports = (router) => {
     router.get('/blogs',
         authController.verifyToken,
         catchErrors(blogController.getBlogs));
+
+    router.get('/blogs/:id',
+        authController.verifyToken,
+        catchErrors(blogController.getBlogById));
+
+    router.put('/blogs',
+        authController.verifyToken,
+        catchErrors(blogController.updateBlog));
 
     return router;
 }

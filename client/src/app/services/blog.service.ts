@@ -16,4 +16,14 @@ export class BlogService {
     const headers = this.authService.createAuthenticationHeaders();
     return this.http.get(`${this.authService.domain}/authentication/blogs`, headers).map(data => data.json());
   }
+
+  getBlogById(id) {
+    const headers = this.authService.createAuthenticationHeaders();
+    return this.http.get(`${this.authService.domain}/authentication/blogs/${id}`, headers).map(data => data.json());
+  }
+
+  updateBlog(blog) {
+    const headers = this.authService.createAuthenticationHeaders();
+    return this.http.put(`${this.authService.domain}/authentication/blogs`, blog, headers).map(data => data.json());
+  }
 }

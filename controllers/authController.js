@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
     if (!req.body.email) {
         return res.json({
             success: false,
@@ -40,11 +40,8 @@ exports.register = async (req, res) => {
                 err
             });
         }
-        return res.json({
-            success: true,
-            message: 'Account created!'
-        });
-    })
+        next();
+    });
 };
 
 exports.checkUsername = async (req, res) => {

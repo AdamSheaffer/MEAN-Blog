@@ -76,8 +76,8 @@ export class RegisterComponent implements OnInit {
     this.authService.registerUser(user).subscribe(data => {
       if (data.success) {
         this.msgService.show(data.message, { cssClass: 'alert alert-success' });
-        this.disableForm();
-        this.router.navigate(['/login']);
+        this.authService.storeUserData(data.token, data.user);
+        this.router.navigate(['/']);
       } else {
         this.msgService.show(data.message, { cssClass: 'alert alert-danger' });
         this.enableForm();

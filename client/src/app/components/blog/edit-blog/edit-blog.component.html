@@ -1,0 +1,16 @@
+<h1 class="page-header">Edit Blog</h1>
+
+<form (submit)="updateBlog()">
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input [disabled]="isProcessing" [(ngModel)]="blog.title" type="text" name="title" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="body">Body</label>
+    <textarea [disabled]="isProcessing" [(ngModel)]="blog.body" rows="30" cols="40" name="body" class="form-control"></textarea>
+  </div>
+
+  <button [disabled]="isProcessing" type="button" class="btn btn-warning" (click)="cancel()">Back</button>
+  <button [disabled]="isProcessing" type="submit" class="btn btn-primary">Save Changes</button>
+</form>

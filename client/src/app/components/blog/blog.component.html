@@ -67,10 +67,10 @@
           <strong>Dislikes</strong> {{blog.dislikedBy?.length || 0}}
         </p>
       </div>
-      <a [routerLink]="['/edit/', 'blog.id']" *ngIf="blog.createdBy === username">
+      <a [routerLink]="['/edit/', blog._id]" *ngIf="blog.createdBy === username">
         <button type="button" class="btn btn-sm btn-info">Edit</button>
       </a>
-      <a [routerLink]="['/delete/', 'blog.id']" *ngIf="blog.createdBy === username">
+      <a [routerLink]="['/delete/', blog._id]" *ngIf="blog.createdBy === username">
         <button type="button" class="btn btn-sm btn-danger">Delete</button>
       </a>
 
