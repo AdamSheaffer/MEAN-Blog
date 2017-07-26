@@ -20,7 +20,7 @@ import { NotAuthGuard } from './guards/notAuth.guard';
 import { BlogListComponent } from './components/blog/blog-list.component';
 import { BlogService } from './services/blog.service';
 import { EditBlogComponent } from './components/blog/edit-blog/edit-blog.component';
-import { BlogPostComponent } from './components/blog-post/blog-post.component';
+import { BlogPostComponent } from './components/blog/blog-post/blog-post.component';
 
 @NgModule({
   declarations: [
