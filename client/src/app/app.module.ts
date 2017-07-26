@@ -17,9 +17,10 @@ import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthGuard } from './guards/auth.guard';
 import { NotAuthGuard } from './guards/notAuth.guard';
-import { BlogComponent } from './components/blog/blog.component';
+import { BlogListComponent } from './components/blog/blog-list.component';
 import { BlogService } from './services/blog.service';
 import { EditBlogComponent } from './components/blog/edit-blog/edit-blog.component';
+import { BlogPostComponent } from './components/blog-post/blog-post.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +31,9 @@ import { EditBlogComponent } from './components/blog/edit-blog/edit-blog.compone
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
-    BlogComponent,
-    EditBlogComponent
+    BlogListComponent,
+    EditBlogComponent,
+    BlogPostComponent
   ],
   imports: [
     BrowserModule,

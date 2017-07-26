@@ -26,4 +26,9 @@ export class BlogService {
     const headers = this.authService.createAuthenticationHeaders();
     return this.http.put(`${this.authService.domain}/authentication/edit`, blog, headers).map(data => data.json());
   }
+
+  deleteBlog(blog) {
+    const headers = this.authService.createAuthenticationHeaders();
+    return this.http.delete(`${this.authService.domain}/authentication/delete/${blog._id}`, headers).map(data => data.json());
+  }
 }

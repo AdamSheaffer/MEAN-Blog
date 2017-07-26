@@ -6,11 +6,11 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { IBlog } from '../../shared/blog.model';
 
 @Component({
-  selector: 'app-blog',
-  templateUrl: './blog.component.html',
-  styleUrls: ['./blog.component.css']
+  selector: 'app-blog-list',
+  templateUrl: './blog-list.component.html',
+  styleUrls: ['./blog-list.component.css']
 })
-export class BlogComponent implements OnInit {
+export class BlogListComponent implements OnInit {
 
   isNewPost = false;
   isProcessing = false;
@@ -71,17 +71,30 @@ export class BlogComponent implements OnInit {
   }
 
   reloadBlogs() {
+    this.isLoadingBlogs = true;
     this.blogService.getBlogs().subscribe(res => {
       if (!res.success) {
         this.msgService.show(res.message, { cssClass: 'alert alert-danger' });
       } else {
         this.blogs = res.blogs;
       }
+      this.isLoadingBlogs = false;
     });
   }
 
   createComment() {
 
+  }
+
+  deleteBlog(blog) {
+    this.blogService.deleteBlog(blog).subscribe(res => {
+      if (!res.success) {
+        this.msgService.show(res.message, { cssClass: 'alert alert-danger' });
+      } else {
+        this.msgService.show(res.message, { cssClass: 'alert alert-success' });
+        this.reloadBlogs();
+      }
+    });
   }
 
   cancelBlogPost() {

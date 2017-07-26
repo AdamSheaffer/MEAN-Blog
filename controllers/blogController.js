@@ -16,7 +16,7 @@ exports.newBlog = async (req, res) => {
     })).save();
     return res.json({
         success: true,
-        message: 'Blog posted',
+        message: 'Blog posted!',
         blog
     });
 };
@@ -84,3 +84,37 @@ exports.updateBlog = async (req, res) => {
         message: 'Blog updated!'
     });
 };
+
+exports.deleteBlog = async (req, res) => {
+    if (!req.params.id) {
+        return res.json({
+            success: false,
+            message: 'No blog id was provided'
+        });
+    }
+
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) {
+        return res.json({
+            success: false,
+            message: 'Whoops! That blog doesn\'t exist'
+        });
+    }
+
+    const requestUser = await User.findById(req.decoded.userId);
+
+    if (!requestUser || requestUser.username !== blog.createdBy) {
+        return res.json({
+            success: false,
+            message: 'That action is not permitted'
+        });
+    }
+
+    await blog.remove();
+
+    return res.json({
+        success: true,
+        message: 'Blog deleted!'
+    });
+}

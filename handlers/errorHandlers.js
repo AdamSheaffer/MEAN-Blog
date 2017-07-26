@@ -21,7 +21,7 @@ exports.productionErrors = (err, req, res, next) => {
     res.status(err.status || 500);
     return res.json({
         success: false,
-        message: err.message,
+        message: 'Whoops! Something went wrong...',
         error: {}
     });
 };

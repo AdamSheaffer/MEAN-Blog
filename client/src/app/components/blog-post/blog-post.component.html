@@ -1,0 +1,72 @@
+<div class="panel panel-primary">
+  <!-- Blog Heading -->
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      {{blog.title}}
+    </h3>
+  </div>
+
+  <!-- Blog Content -->
+  <div class="panel-body">
+    {{blog.body}}
+  </div>
+
+  <!-- Blog Footer -->
+  <div class="panel-footer">
+    <strong>Posted by</strong> {{blog.createdBy}}
+    <br />
+    <strong>Posted:</strong> {{blog.createdAt | date}}
+    <div>
+      <p>
+        <strong>Likes</strong> {{blog.likedBy?.length || 0}}
+        <br>
+        <strong>Dislikes</strong> {{blog.dislikedBy?.length || 0}}
+      </p>
+    </div>
+    <a [routerLink]="['/edit/', blog._id]" *ngIf="blog.createdBy === username">
+        <button type="button" class="btn btn-sm btn-info">Edit</button>
+      </a>
+    <a *ngIf="blog.createdBy === username">
+        <button type="button" data-toggle="modal" data-target="#confirmDeleteModal" class="btn btn-sm btn-danger">Delete</button>
+      </a>
+
+    <!-- Likes -->
+    <div class="dropdown " *ngIf="blog.createdBy !==u sername ">
+      <button type="button " class="btn btn-sm btn-success ">
+          <span class="glyphicon glyphicon-thumbs-up ">&nbsp;</span> {{blog.likedBy?.length || 0}}
+        </button>
+      <div class="dropdown-content ">
+        <a>Adam2</a>
+        <a>Bob836</a>
+        <a>SpUdZMcNaste</a>
+      </div>
+    </div>
+
+    <!-- Dislikes -->
+    <div class="dropdown " *ngIf="blog.createdBy !==u sername ">
+      <button type="button " class="btn btn-sm btn-danger ">
+          <span class="glyphicon glyphicon-thumbs-down ">&nbsp;</span> {{blog.dislikedBy?.length || 0}}
+        </button>
+      <div class="dropdown-content ">
+        <a>RichardJdh4H</a>
+        <a>CR4ZMcNaste</a>
+      </div>
+    </div>
+  </div>
+  <!-- Footer End -->
+
+  <!-- Comments -->
+  <ul class="list-group ">
+    <li class="list-group-item ">
+      <button (click)="createComment() " class="btn btn-sm btn-danger ">Post Comment</button>
+      <br>
+      <!-- <form>
+          <textarea class="form-control " name="comments " rows="8 " cols="30 "></textarea>
+          <button class="btn btn-sm btn-info ">Submit</button>
+          <button class="btn btn-sm btn-danger ">Cancel</button>
+        </form> -->
+    </li>
+    <li class="list-group-item "></li>
+    <li class="list-group-item "></li>
+  </ul>
+</div>

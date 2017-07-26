@@ -1,0 +1,46 @@
+<h1 class="page-header">Blog Feed</h1>
+
+<button *ngIf="!isNewPost" (click)="newBlogForm()" type="button" class="btn btn-primary">New Post</button>
+<button [disabled]="isLoadingBlogs" *ngIf="!isNewPost" (click)="reloadBlogs()" type="button" class="btn btn-warning">
+  <span class="glyphicon glyphicon-repeat"></span>
+  <span>&nbsp;</span>
+  Reload
+</button>
+
+<br>
+<br>
+
+<!-- Blog Form -->
+<form [formGroup]="form" name="blogForm" (submit)="onBlogSubmit()" *ngIf="isNewPost">
+  <!-- Title -->
+  <div class="form-group">
+    <label for="title">Title</label>
+    <div [ngClass]="{'has-success': form.controls.title.valid, 'has-error': form.controls.title.errors && form.controls.title.dirty }">
+      <input formControlName="title" type="text" name="title" class="form-control" placeholder="Blog Title">
+      <ul class="help-block">
+        <li *ngIf="form.controls.title.errors?.required && form.controls.title.dirty">This field is required</li>
+        <li *ngIf="form.controls.title.errors?.maxlength && form.controls.title.dirty">Maximum 100 characters</li>
+      </ul>
+    </div>
+  </div>
+  <!-- Body -->
+  <div class="form-group">
+    <label for="body">Body</label>
+    <div [ngClass]="{'has-success': form.controls.body.valid, 'has-error': form.controls.body.errors && form.controls.body.dirty }">
+      <textarea formControlName="body" cols="50" rows="40" class="form-control"></textarea>
+      <ul class="help-block">
+        <li *ngIf="form.controls.body.errors?.required && form.controls.body.dirty">This field is required</li>
+        <li *ngIf="form.controls.body.errors?.maxlength && form.controls.body.dirty">Maximum 10,000 characters</li>
+      </ul>
+    </div>
+  </div>
+
+  <button [disabled]="isProcessing" (click)="cancelBlogPost()" type="button" class="btn btn-sm btn-danger">Cancel</button>
+  <button [disabled]="isProcessing || !form.valid" type="submit" class="btn btn-sm btn-success">Post</button>
+</form>
+
+
+<div *ngIf="!isNewPost">
+  <app-blog-post [blog]="blog" *ngFor="let blog of blogs">
+  </app-blog-post>
+</div>

@@ -31,5 +31,9 @@ module.exports = (router) => {
         authController.verifyToken,
         catchErrors(blogController.updateBlog));
 
+    router.delete('/delete/:id',
+        authController.verifyToken,
+        catchErrors(blogController.deleteBlog));
+
     return router;
 }
