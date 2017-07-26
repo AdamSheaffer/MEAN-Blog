@@ -22,7 +22,7 @@
           <a routerLink="/profile">Profile</a>
         </li>
         <li *ngIf="authService.isLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a routerLink="/blog">Blog</a>
+          <a routerLink="/blog">Blogs</a>
         </li>
         <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a [routerLink]="['/login']">Login</a>

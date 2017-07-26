@@ -76,7 +76,6 @@ export class BlogComponent implements OnInit {
         this.msgService.show(res.message, { cssClass: 'alert alert-danger' });
       } else {
         this.blogs = res.blogs;
-        console.log(this.blogs);
       }
     });
   }

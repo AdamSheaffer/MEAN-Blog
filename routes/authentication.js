@@ -27,7 +27,7 @@ module.exports = (router) => {
         authController.verifyToken,
         catchErrors(blogController.getBlogById));
 
-    router.put('/blogs',
+    router.put('/edit',
         authController.verifyToken,
         catchErrors(blogController.updateBlog));
 
