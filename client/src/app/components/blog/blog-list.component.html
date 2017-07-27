@@ -41,6 +41,6 @@
 
 
 <div *ngIf="!isNewPost">
-  <app-blog-post [username]="username" [blog]="blog" *ngFor="let blog of blogs">
+  <app-blog-post [username]="username" [blog]="blog" (deleteRequest)="deleteBlog($event)" *ngFor="let blog of blogs">
   </app-blog-post>
 </div>

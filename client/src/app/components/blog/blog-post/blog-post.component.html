@@ -27,8 +27,8 @@
         <button type="button" class="btn btn-sm btn-info">Edit</button>
       </a>
     <a *ngIf="blog.createdBy === username">
-        <button type="button" data-toggle="modal" data-target="#confirmDeleteModal" class="btn btn-sm btn-danger">Delete</button>
-      </a>
+        <button (click)="deleteBlog()" type="button" class="btn btn-sm btn-danger">Delete</button>
+    </a>
 
     <!-- Likes -->
     <div class="dropdown " *ngIf="blog.createdBy !== username">

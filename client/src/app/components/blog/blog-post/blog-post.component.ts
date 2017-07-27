@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Blog } from '../../../shared/blog.model';
 import { BlogService } from '../../../services/blog.service';
 import { FlashMessagesService } from 'angular2-flash-messages/module';
@@ -13,6 +13,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms/';
 export class BlogPostComponent implements OnInit {
   @Input() username: any;
   @Input() blog: Blog;
+  @Output() deleteRequest = new EventEmitter<Blog>();
 
   isCommenting: boolean;
   isProcessingComment: boolean;
@@ -86,4 +87,7 @@ export class BlogPostComponent implements OnInit {
     });
   }
 
+  deleteBlog() {
+    this.deleteRequest.emit(this.blog);
+  }
 }
