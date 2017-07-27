@@ -31,25 +31,22 @@
       </a>
 
     <!-- Likes -->
-    <div class="dropdown " *ngIf="blog.createdBy !==u sername ">
-      <button type="button " class="btn btn-sm btn-success ">
+    <div class="dropdown " *ngIf="blog.createdBy !== username">
+      <button [disabled]="hasLiked" (click)="likeBlog()" type="button" class="btn btn-sm btn-success">
           <span class="glyphicon glyphicon-thumbs-up ">&nbsp;</span> {{blog.likedBy?.length || 0}}
         </button>
       <div class="dropdown-content ">
-        <a>Adam2</a>
-        <a>Bob836</a>
-        <a>SpUdZMcNaste</a>
+        <a *ngFor="let user of blog.likedBy" [routerLink]="['/user/', user]">{{user}}</a>
       </div>
     </div>
 
     <!-- Dislikes -->
-    <div class="dropdown " *ngIf="blog.createdBy !==u sername ">
-      <button type="button " class="btn btn-sm btn-danger ">
+    <div class="dropdown " *ngIf="blog.createdBy !== username ">
+      <button [disabled]="hasDisliked" (click)="dislikeBlog()" type="button" class="btn btn-sm btn-danger">
           <span class="glyphicon glyphicon-thumbs-down ">&nbsp;</span> {{blog.dislikedBy?.length || 0}}
         </button>
-      <div class="dropdown-content ">
-        <a>RichardJdh4H</a>
-        <a>CR4ZMcNaste</a>
+      <div class="dropdown-content">
+        <a *ngFor="let user of blog.dislikedBy" [routerLink]="['/user/', user]">{{user}}</a>
       </div>
     </div>
   </div>
@@ -57,16 +54,27 @@
 
   <!-- Comments -->
   <ul class="list-group ">
-    <li class="list-group-item ">
-      <button (click)="createComment() " class="btn btn-sm btn-danger ">Post Comment</button>
-      <br>
-      <!-- <form>
-          <textarea class="form-control " name="comments " rows="8 " cols="30 "></textarea>
-          <button class="btn btn-sm btn-info ">Submit</button>
-          <button class="btn btn-sm btn-danger ">Cancel</button>
-        </form> -->
+    <li class="list-group-item">
+      <button *ngIf="!isCommenting" (click)="isCommenting = true" class="btn btn-sm btn-danger">Post Comment</button>
+      <br />
+      <div *ngIf="isCommenting">
+        <form [formGroup]="commentForm" (submit)="postComment()">
+          <textarea formControlName="comments" class="form-control " name="comments" rows="8 " cols="30 "></textarea>
+          <div [ngClass]="">
+            <ul class="help-block">
+              <li *ngIf="commentForm.controls.comments.errors?.required && commentForm.controls.comments.dirty">This field is required</li>
+              <li *ngIf="commentForm.controls.comments.errors?.maxLength && commentForm.controls.comments.dirty">Comments cannot exceed 1000 characters</li>
+            </ul>
+          </div>
+          <br />
+          <button [disabled]="!commentForm.valid || isProcessingComment" type="submit" class="btn btn-sm btn-info">Submit</button>
+          <button [disabled]="isProcessingComment" (click)="isCommenting = false || commentForm.reset()" type="button" class="btn btn-sm btn-danger ">Cancel</button>
+        </form>
+      </div>
     </li>
-    <li class="list-group-item "></li>
-    <li class="list-group-item "></li>
+    <li class="list-group-item" *ngFor="let comment of blog.comments">
+      <h5>{{comment.commentor}}</h5>
+      <p>{{comment.comment}}</p>
+    </li>
   </ul>
 </div>

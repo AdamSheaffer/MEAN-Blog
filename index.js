@@ -6,7 +6,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const errorHandlers = require('./handlers/errorHandlers');
-const authentication = require('./routes/authentication')(router);
+const routes = require('./routes/routes')(router);
 
 env.config({
     path: 'variables.env'
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(express.static(`${__dirname}/client/dist`));
-app.use('/authentication', authentication);
+app.use('/api', routes);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(`${__dirname}/client/dist/index.html`));

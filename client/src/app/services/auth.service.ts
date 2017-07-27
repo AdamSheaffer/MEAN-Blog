@@ -28,16 +28,20 @@ export class AuthService {
     this.authToken = localStorage.getItem('token');
   }
 
+  getUsername() {
+    return localStorage.getItem('username');
+  }
+
   registerUser(user): Observable<any> {
-    return this.http.post(`${this.domain}/authentication/register`, user).map(res => res.json());
+    return this.http.post(`${this.domain}/api/register`, user).map(res => res.json());
   }
 
   checkUsername(username: String): Observable<any> {
-    return this.http.get(`${this.domain}/authentication/checkUsername/${username}`).map(res => res.json());
+    return this.http.get(`${this.domain}/api/checkUsername/${username}`).map(res => res.json());
   }
 
   login(user) {
-    return this.http.post(`${this.domain}/authentication/login`, user).map(res => res.json());
+    return this.http.post(`${this.domain}/api/login`, user).map(res => res.json());
   }
 
   logout() {
@@ -59,7 +63,11 @@ export class AuthService {
 
   getProfile() {
     const options = this.createAuthenticationHeaders();
-    return this.http.get(`${this.domain}/authentication/profile`, options).map(res => res.json());
+    return this.http.get(`${this.domain}/api/profile`, options).map(res => res.json());
   }
 
+  getPublicProfile(username) {
+    const options = this.createAuthenticationHeaders();
+    return this.http.get(`${this.domain}/api/user/${username}`, options).map(res => res.json());
+  }
 }

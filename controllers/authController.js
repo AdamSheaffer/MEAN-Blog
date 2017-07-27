@@ -152,3 +152,17 @@ exports.profile = async (req, res) => {
         user
     });
 };
+
+exports.publicProfile = async (req, res) => {
+    if (!req.params.username) {
+        return res.json({ success: false, message: 'No username was provided' });
+    }
+
+    const user = await User.findOne({ username: req.params.username }).select('username email').exec();
+
+    if (!user) {
+        return res.json({ success: false, message: 'No user was found with that username' });
+    }
+
+    return res.json({ success: true, user });
+}
