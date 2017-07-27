@@ -3,7 +3,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { AuthService } from '../../services/auth.service';
 import { BlogService } from '../../services/blog.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
-import { IBlog } from '../../shared/blog.model';
+import { Blog } from '../../shared/blog.model';
 
 @Component({
   selector: 'app-blog-list',
@@ -17,7 +17,7 @@ export class BlogListComponent implements OnInit {
   isLoadingBlogs = true;
   username: String;
   form: FormGroup;
-  blogs: IBlog[] = [];
+  blogs: Blog[] = [];
 
   createForm() {
     this.form = this.formBuilder.group({
@@ -80,10 +80,6 @@ export class BlogListComponent implements OnInit {
       }
       this.isLoadingBlogs = false;
     });
-  }
-
-  createComment() {
-
   }
 
   deleteBlog(blog) {

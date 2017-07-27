@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IBlog } from '../../../shared/blog.model';
+import { Blog } from '../../../shared/blog.model';
 import { BlogService } from '../../../services/blog.service';
 import { FlashMessagesService } from 'angular2-flash-messages/module';
 import { AuthService } from '../../../services/auth.service';
@@ -12,7 +12,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms/';
 })
 export class BlogPostComponent implements OnInit {
   @Input() username: any;
-  @Input() blog: IBlog;
+  @Input() blog: Blog;
 
   isCommenting: boolean;
   isProcessingComment: boolean;
